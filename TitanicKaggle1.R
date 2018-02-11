@@ -1,5 +1,3 @@
-setwd("C:/Users/Benson/Desktop/Titanic")
-
 train <- read.csv('train.csv', stringsAsFactors = F)
 test  <- read.csv('test.csv', stringsAsFactors = F)
 
@@ -81,7 +79,6 @@ combined$Fare[FareIndex] <- 8.05
 colSums(combined == '')
 
 
-
 ##cleaning missing Age values... predicting the values. replacing them with predicted values
 ##using decision tree to grow trees
 ##To achieve the prediction, we need to use 'rpart' library
@@ -96,7 +93,6 @@ combined$Age[is.na(combined$Age)] <- predict(Agefit,combined[is.na(combined$Age)
 ##test to see if Age has been cleaned successiful
 
 colSums(combined == '')
-
 
 
 
@@ -143,7 +139,6 @@ ggplot(combined[1:891,], aes(x = Sex, fill = Survived)) +
 ##If you are a female and in 1st and 2nd classes, then you have a higher survival rate
 ##If you are a male in 2nd and 3rd classes your surval rate is very poor
 
-##Let's try E
 
 ##strings are imported as factors in R. Therefore Name vector should
 ##converted back to "character"
@@ -271,8 +266,7 @@ caret.control <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
 
 # Use caret to train a rpart decision trees using 10-fold cross 
 # validation repeated 3 times and use 7 values for tuning the
-# cp hyperparameter. This code returns the best model trained on
-# all the data using the best value of cp! Mighty!
+# cp hyperparameter. 
 
 rpart.cv <- train(Survived ~ ., data = titanic.train, method = "rpart",
                   trControl = caret.control, tuneLength = 30)
@@ -354,17 +348,6 @@ confusionMatrix(prediction_tuneRF,titanic.test$Survived)
 
 ##We can now use our model to predict our test dataset
 Final_RF <- predict(RF_tuned, test)
-
-
-##How are we doing on the leader board
-submission <- data.frame(PassengerId = test$PassengerId,
-                         Survived = Final_RF)
-
-# Write out a .CSV suitable for Kaggle submission
-write.csv(submission, file = "MyRFTuned.csv", row.names = FALSE)
-
-##Now we have improved from 0.78947 to 0.79904 on the leader board
-
 
 
 ##---------------------------------------------------------------------------------------#
